@@ -87,7 +87,21 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "a1694dd72322450baee48d21ed54ac21"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+  <script>
+    class ValidationError extends Error{
+      constructor(message){
+        super(message);
+        this.name ="ValidationError";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +109,133 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+    // Start your code here
+    // You may move this JS to another file if you wish
+
+      function test() {
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new SyntaxError('Input must be a number');
+        }
+        if (firstNum == '' || secondNum == '') {
+          throw new ValidationError('Input can\'t be empty');
+        }
+      }
+
+      try {
+        test();
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } 
+      catch(error) {
+        if (error instanceof SyntaxError) {
+          console.log(error.message);
+        }
+        else {
+          console.log(error.message);
+        }
+      } 
+      finally {
+        console.log('Done');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    //Console Log
+    errorBtns[0].addEventListener('click', () => {
+      console.log('Console Log');
+    });
+
+    //Console Error
+    errorBtns[1].addEventListener('click', () => {
+      console.log('Error');
+    });
+
+    //Console Count
+    errorBtns[2].addEventListener('click', () => {
+      console.count();
+    });
+
+    //Console Warn
+    errorBtns[3].addEventListener('click', () => {
+      console.warn('Warn');
+    });
+
+    //Console Assert
+    errorBtns[4].addEventListener('click', () => {
+      const a = 5;
+      const b = 3;
+      const reason = 'a is expected to be less than b';
+      console.assert(a < b, {a, b, reason});
+    });
+
+    //Console Clear
+    errorBtns[5].addEventListener('click', () => {
+      console.clear();
+    });
+
+    //Console Dir
+    errorBtns[6].addEventListener('click', () => {
+      console.dir(document.head);
+    });
+
+    //Console dirxml
+    errorBtns[7].addEventListener('click', () => {
+      console.dirxml(document);
+    });
+
+    //Console Group Start
+    errorBtns[8].addEventListener('click', () => {
+      console.group();
+    });
+
+    //Console Group End
+    errorBtns[9].addEventListener('click', () => {
+      console.groupEnd();
+    });
+
+    //Console Table
+    let people = [
+      {
+        first: 'Jay',
+        last: 'Jake',
+      },
+      { 
+        first: 'David',
+        last: 'Goggins',
+      }
+    ];
+    errorBtns[10].addEventListener('click', () => {
+      console.table(people);
+    });
+
+    //Start Timer
+    errorBtns[11].addEventListener('click', () => {
+      console.time();
+    });
+
+    //End Timer
+    errorBtns[12].addEventListener('click', () => {
+      console.timeEnd();
+    });
+
+    //Console Trace
+    errorBtns[13].addEventListener('click', () => {
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { console.trace(); };
+      first();
+    });
+
+    //Trigger a Global Error
+    errorBtns[14].addEventListener('click', () => {
+      console.log(trigger);
+    });
+
+
+    window.onerror = (event, source, lineno, colno, error) => {
+      console.log('sadly an error happened my friend');
+    };
+
   </script>
 </body>
 
